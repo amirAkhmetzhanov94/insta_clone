@@ -1,0 +1,24 @@
+{% include "base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% for post in post_list %}
+            <div class="card text-center">
+                <div class="card-header">
+                    {{ post.author }}
+                </div>
+                <div class="card-body">
+                    <img src="{{ post.picture.url }}" width="500" height="500" alt="">
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
