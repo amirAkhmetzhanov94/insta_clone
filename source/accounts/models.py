@@ -20,6 +20,11 @@ class Profile(models.Model):
 
     gender_user = models.ForeignKey(Gender, blank=True, null=True, on_delete=models.PROTECT, verbose_name="Gender user")
 
+    followers = models.ManyToManyField(get_user_model(), blank=True, related_name="followers")
+
+    def __str__(self):
+        return f'{self.user}'
+
 
 
 

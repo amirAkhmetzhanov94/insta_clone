@@ -19,5 +19,6 @@ from accounts import views as accounts_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', accounts_views.LoginView.as_view(), name="login")
+    path('', accounts_views.LoginView.as_view(), name="login"),
+    path('profile/<int:pk>/followers/add', accounts_views.AddFollower.as_view(), name="add-follower")
 ]
