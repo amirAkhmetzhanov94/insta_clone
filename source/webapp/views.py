@@ -1,9 +1,31 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from webapp.models import Post, Comment
 from webapp.forms import PostForm
+
+
+class LikeGateway(View):
+    post_obj = None
+
+    def dispatch(self, request, *args, **kwargs):
+        self.post_obj = get_object_or_404(Post, pk=kwargs.get('pk'))
+        return super(LikeGateway, self).dispatch(request, *args, **kwargs)
+
+    def set_like(self):
+        self.post_obj.likes.add(self.request.user)
+
+    def remove_like(self):
+        self.post_obj.likes.remove(self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        if request.user in self.post_obj.likes.all():
+            self.remove_like()
+        else:
+            self.set_like()
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 class IndexView(ListView):

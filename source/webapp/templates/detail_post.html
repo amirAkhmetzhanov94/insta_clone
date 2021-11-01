@@ -1,0 +1,34 @@
+{% include "base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+     <div class="container">
+            <div class="card text-center">
+                <div class="card-header">
+                    {{ post.author }}
+                </div>
+                <div class="card-body">
+                    <img src="{{ post.picture.url }}" width="500" height="500" alt="">
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                    <form action="{% url "like_gateway" post.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="post_id" value="{{ post.id }}">
+                            {% if user in post.likes.all %}
+                                <i class="bi bi-suit-heart-fill"></i>
+                            {% else %}
+                                <i class="bi bi-suit-heart"></i>
+                            {% endif %}
+                        </button>
+                        {{ post.likes.count }}
+                    </form>
+                </div>
+            </div>
+    </div>
+
+{% endblock %}
