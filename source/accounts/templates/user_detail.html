@@ -5,7 +5,12 @@
 
 {% block content %}
     <div class="container">
-        <img src="{{ user_obj.profile.avatar.url }}" width="100" height="100" alt="" class="round">
+        {% if user_obj.profile.avatar %}
+            <img src="{{ user_obj.profile.avatar.url }}" width="100" height="100" alt="" class="round">
+        {% else %}
+            <img class="round" src="https://kudago.com/static/img/default-avatar.png"
+                 width="100" height="100" alt="">
+        {% endif %}
         {{ user_obj.profile.about }}
         {{ user_obj.username }}
         <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
