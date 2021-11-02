@@ -1,20 +1,44 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+from accounts.models import Profile
 
 
-class RegistrationForm(UserCreationForm):
-    avatar = forms.ImageField()
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(
+        label="Password",
+        required=True,
+        strip=False,
+        widget=forms.PasswordInput
+    )
+    password_confirm = forms.CharField(
+        label="Confirm password",
+        required=True,
+        strip=False,
+        widget=forms.PasswordInput
+    )
 
-    about = forms.CharField(required=False, max_length=30)
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirm = cleaned_data.get("password_confirm")
+        if password and password_confirm and password != password_confirm:
+            raise forms.ValidationError("Passwords are not equal")
+        return cleaned_data
 
-    phone_number = forms.CharField(required=False)
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
 
-    gender_user = forms.ChoiceField(required=False)
+    class Meta:
+        model = User
+        fields = ["username", "password", "password_confirm", "email", "last_name"]
 
-    last_name = forms.CharField(required=False)
 
-    email = forms.EmailField(required=True)
-
-    class Meta(UserCreationForm.Meta):
-        fields = ["username", "email", "avatar", "password1", "password2",
-                  "last_name", "about", "phone_number", "gender_user"]
+class ProfileRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ["user", "followers"]

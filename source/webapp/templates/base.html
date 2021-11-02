@@ -15,15 +15,27 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="#">
-            <img
-                    src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                    alt=""></a>
+        <div>
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img
+                        src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                        alt=""></a>
+        </div>
+        <div>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+        <div>
+            <p>{{ user }}</p>
+            <a href="{% url "create_post" %}"><i class="bi bi-file-plus"></i></a>
+            <a href="{% url 'profile' user.pk %}"><i class="bi bi-person-circle"></i></a>
+            <form action="{% url "logout" %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-left"></i></button>
+            </form>
+        </div>
 
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        </form>
-        <a href="{% url 'profile' user.pk %}"><i class="bi bi-person-circle"></i></a>
     </div>
 </nav>
 <div class="container">{% block content %}{% endblock %}</div>

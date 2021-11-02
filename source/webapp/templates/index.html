@@ -10,7 +10,7 @@
         {% for post in post_list %}
             <div class="card text-center">
                 <div class="card-header">
-                    {{ post.author }}
+                    <a href="{% url "profile" post.author_id %}">{{ post.author }}</a>
                 </div>
                 <div class="card-body">
                     <img src="{{ post.picture.url }}" width="500" height="500" alt="">

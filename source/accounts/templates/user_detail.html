@@ -5,14 +5,21 @@
 
 {% block content %}
     <div class="container">
-        {% for u in user_detail %}
-            <img src="{{ u.avatar.url }}" width="100" height="100" alt="" class="round">
+        <img src="{{ user_obj.profile.avatar.url }}" width="100" height="100" alt="" class="round">
+        {{ user_obj.profile.about }}
+        {{ user_obj.username }}
+        <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="user_id" value="{{ user_obj.id }}">
+                {% if user in user_obj.profile.followers.all %}
+                    unfollow
+                {% else %}
+                    follow
+                {% endif %}
+            </button>
 
-            {{ u.about }}
-            {{ user_obj.username }}
-            {{ u.followers.count }}
-
-        {% endfor %}
+        </form>
+        Подписчики  {{ user_obj.profile.followers.count }}
     </div>
 
 {% endblock %}
