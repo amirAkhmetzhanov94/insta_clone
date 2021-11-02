@@ -38,6 +38,9 @@ class PostCreateView(CreateView):
     template_name = "create_post.html"
     form_class = PostForm
 
+    def get_success_url(self):
+        return reverse("index")
+
 
 class PostDetailView(DetailView):
     model = Post
