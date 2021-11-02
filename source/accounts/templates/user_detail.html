@@ -13,6 +13,13 @@
         {% endif %}
         {{ user_obj.profile.about }}
         {{ user_obj.username }}
+        {% ifequal user user_obj %}
+        <p>
+            <a class="btn btn-primary mt-2" href="{% url "profile_edit" user_obj.pk %}">
+                Edit account <i class="bi bi-pencil-square"></i>
+            </a>
+        </p>
+        {% endifequal %}
         <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
             {% csrf_token %}
             <button type="submit" name="user_id" value="{{ user_obj.id }}">
