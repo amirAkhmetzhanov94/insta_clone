@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    <div class="container">
+        {% for u in user_detail %}
+            <img src="{{ u.avatar.url }}" width="100" height="100" alt="" class="round">
+
+            {{ u.about }}
+            {{ user_obj.username }}
+            {{ u.followers.count }}
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

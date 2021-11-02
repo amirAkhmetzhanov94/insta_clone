@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.views.generic import View, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+from accounts.forms import RegistrationForm
 from accounts.models import Profile
 
 
@@ -61,3 +64,28 @@ class RemoveFollower(LoginRequiredMixin,  View):
         profile = Profile.objects.get(pk=pk)
         profile.followers.remove(request.user)
         return redirect("profile", pk=profile.pk)
+
+
+class RegisterView(CreateView):
+    model = User
+    template_name = "register.html"
+    form_class = RegistrationForm
+
+    def form_valid(self, form):
+        user = form.save()
+        Profile.objects.create(user=user)
+        login(self.request, user)
+        return redirect("index")
+
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = "user_detail.html"
+    context_object_name = "user_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_detail'] = Profile.objects.all()
+        return context
+
+
