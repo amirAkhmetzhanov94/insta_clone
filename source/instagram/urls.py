@@ -26,6 +26,7 @@ urlpatterns = [
     path('logout/', accounts_views.LogoutView.as_view(), name="logout"),
     path('create/', accounts_views.RegisterView.as_view(), name="register"),
     path('profile/<int:pk>/', accounts_views.UserDetailView.as_view(), name="profile"),
+    path('profile/<int:pk>/edit/', accounts_views.UserChangeView.as_view(), name="profile_edit"),
     path('followers_gateway/<int:pk>', accounts_views.FollowGateway.as_view(), name="follower-gateway"),
     path('posts/', webapp_views.IndexView.as_view(), name="index"),
     path("posts/new/", webapp_views.PostCreateView.as_view(), name="create_post"),

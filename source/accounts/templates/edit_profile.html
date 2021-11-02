@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block content %}
+    <h1 class="mb-5">Edit {{ user_obj.username }}'s profile</h1>
+    <form action="{% url "profile_edit" user_obj.pk %}"
+          method="post"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form|crispy }}
+        {{ profile_form|crispy }}
+        <button class="btn btn-primary mt-3 mb-5">Edit</button>
+    </form>
+{% endblock %}
