@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}search{% endblock %}
+
+{% block content %}
+    {% if message %}
+        <div class="card-text m-3">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% for user in object_list %}
+        <div class="card-text m-3">
+            <a href="{% url "profile" user.pk %}">{{ user.username }}</a>
+        </div>
+    {% endfor %}
+{% endblock %}
