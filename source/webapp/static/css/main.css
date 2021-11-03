@@ -7,8 +7,26 @@
 i.bi-person-circle{
     font-size: 2rem;
 }
+a.btn-primary{
+    height: 40px;
+    margin-bottom: 5px;
+}
 li.dropdown{
     margin: 0;
     padding: 0;
     list-style-type: none;
+}
+
+div.wrapper{
+    display: flex;
+    margin-top: 50px;
+}
+
+div.avatar{
+    padding-left: 120px;
+}
+
+div.avatar, div.profile_menu{
+    height: 100%;
+    width: 49%;
 }

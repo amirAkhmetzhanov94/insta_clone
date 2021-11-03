@@ -31,6 +31,7 @@ class LikeGateway(View):
 class IndexView(ListView):
     model = Post
     template_name = "index.html"
+    ordering = "-created_on"
 
 
 class PostCreateView(CreateView):

@@ -14,7 +14,7 @@ class Profile(models.Model):
 
     avatar = models.ImageField(blank=False, upload_to="avatars", verbose_name="Avatar")
 
-    about = models.TextField(max_length=30, blank=True, null=True, verbose_name="About user")
+    about = models.TextField(max_length=150, blank=True, null=True, verbose_name="About user")
 
     phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Phone number")
 
