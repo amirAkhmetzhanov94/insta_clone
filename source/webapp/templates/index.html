@@ -1,6 +1,8 @@
 {% include "base.html" %}
-
+{% load static %}
+{% load crispy_forms_filters %}
 {% block title %}
+
 
 {% endblock %}
 
@@ -8,7 +10,7 @@
 {% block content %}
     <div class="container">
         {% for post in post_list %}
-            <div class="card text-center">
+            <div class="card text-center mt-4">
                 <div class="card-header">
                     <a href="{% url "profile" post.author_id %}">{{ post.author }}</a>
                 </div>
@@ -27,7 +29,32 @@
                             {% endif %}
                         </button>
                         {{ post.likes.count }}
-
+                    </form>
+                    <div class="comments_section mt-3">
+                    <h4 class="text-left"><b>Comments:</b></h4>
+                        {% for comment in post.comments.all|slice:"3" %}
+                            <p class="text-left">{{ comment.created_on }} by
+                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment }}
+                            </p>
+                        {% endfor %}
+                        {% if post.comments.all|length > 3 %}
+                            <a class="text-left" href="{% url "detail_post" post.pk %}">View all comments...</a>
+                        {% endif %}
+                    </div>
+                    <form  action="{% url "index" %}" method="post">
+                        <div class="form-row">
+                            {% csrf_token %}
+                                <div class="col-12">
+                                {% if error %}
+                                     <p>{{ error.text }}</p>
+                                {% endif %}
+                                    {{ form|crispy }}
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-primary btn-block">Send</button>
+                                    <input type="hidden" name="post_id" value="{{ post.pk }}">
+                                </div>
+                        </div>
                     </form>
                 </div>
             </div>

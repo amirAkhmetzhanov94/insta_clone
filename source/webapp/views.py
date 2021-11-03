@@ -1,10 +1,11 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic.edit import ModelFormMixin
 
 from webapp.models import Post, Comment
-from webapp.forms import PostForm
+from webapp.forms import PostForm, CommentForm
 
 
 class LikeGateway(View):
@@ -28,10 +29,27 @@ class LikeGateway(View):
         return redirect(request.META.get('HTTP_REFERER'))
 
 
-class IndexView(ListView):
+class IndexView(ListView, ModelFormMixin):
     model = Post
     template_name = "index.html"
     ordering = "-created_on"
+    form_class = CommentForm
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        self.form = self.get_form(self.form_class)
+        return ListView.get(self, request, *args, **kwargs)
+
+    def post(self, request, **kwargs):
+        post_id = request.POST.get("post_id")
+        post = get_object_or_404(Post, id=post_id)
+        self.form = self.get_form(self.form_class)
+        if self.form.is_valid():
+            post.comments.create(author=request.user, text=self.form.clean().get("text"))
+            return redirect("detail_post", pk=post.pk)
+        else:
+            return render(request, self.template_name, {"error": self.form.errors, "post_list": Post.objects.all(),
+                                                        "form": self.form_class})
 
 
 class PostCreateView(CreateView):
@@ -72,4 +90,4 @@ class PostCommentCreateView(CreateView):
         comment = form.save(commit=False)
         comment.post = post
         comment.save()
-        return redirect("user_detail", kwargs={"pk": post.pk})
+        return redirect("detail_post", kwargs={"pk": post.pk})

@@ -32,5 +32,5 @@ urlpatterns = [
     path("posts/new/", webapp_views.PostCreateView.as_view(), name="create_post"),
     path("posts/<int:pk>", webapp_views.PostDetailView.as_view(), name="detail_post"),
     path('likes_gateway/<int:pk>', webapp_views.LikeGateway.as_view(), name='like_gateway'),
-    path('search/', accounts_views.SearchResultsView.as_view(), name='search_user'),
+    path('search/', accounts_views.SearchResultsView.as_view(), name='search_user')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,5 @@
 {% include "base.html" %}
-
+{% load crispy_forms_filters %}
 {% block title %}
 
 {% endblock %}
@@ -26,6 +26,15 @@
                             {% endif %}
                         </button>
                         {{ post.likes.count }}
+                    </form>
+                                    <div class="comments_section mt-3">
+                    <h4 class="text-left"><b>Comments:</b></h4>
+                        {% for comment in post.comments.all %}
+                            <p class="text-left">{{ comment.created_on }} by
+                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment }}
+                            </p>
+                        {% endfor %}
+                    </div>
                     </form>
                 </div>
             </div>
