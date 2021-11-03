@@ -34,7 +34,7 @@
                     <h4 class="text-left"><b>Comments:</b></h4>
                         {% for comment in post.comments.all|slice:"3" %}
                             <p class="text-left">{{ comment.created_on }} by
-                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment }}
+                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment.text }}
                             </p>
                         {% endfor %}
                         {% if post.comments.all|length > 3 %}

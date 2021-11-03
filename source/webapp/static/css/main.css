@@ -7,10 +7,6 @@ ul.errorlist{
     color: darkred;
 }
 
-textarea.textarea{
-    border: none;
-}
-
 .round {
     border-radius: 100px;
     border: 3px solid green;
