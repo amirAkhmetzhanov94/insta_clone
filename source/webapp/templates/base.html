@@ -22,8 +22,8 @@
                         alt=""></a>
         </div>
         <div>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" action="{% url "search_user" %}">
+                <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search">
             </form>
         </div>
         <div>
