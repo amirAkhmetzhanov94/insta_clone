@@ -3,3 +3,12 @@
     border: 3px solid green;
     box-shadow: 0 0 7px #666;
    }
+
+i.bi-person-circle{
+    font-size: 2rem;
+}
+li.dropdown{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
