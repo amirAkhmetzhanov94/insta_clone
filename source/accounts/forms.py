@@ -54,3 +54,9 @@ class ProfileChangeForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ["user", "followers"]
+
+
+class SearchForm(forms.Form):
+    q = forms.CharField(max_length=100, required=False, label="Search")
+
+
