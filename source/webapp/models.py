@@ -7,7 +7,7 @@ class Post(models.Model):
 
     description = models.TextField(max_length=3000, blank=True, null=True, default=None, verbose_name="Description")
 
-    author = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name="Author")
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1, verbose_name="Author", related_name="posts")
 
     created_on = models.DateTimeField(auto_now_add=True)
 
