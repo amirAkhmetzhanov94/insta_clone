@@ -47,10 +47,8 @@ class FollowGateway(View):
 
     def post(self, request, *args, **kwargs):
         if request.user in self.user_obj.followers.all():
-            print(1)
             self.remove_follow()
         else:
-            print(2)
             self.set_follow()
         return redirect(request.META.get('HTTP_REFERER'))
 
@@ -77,7 +75,8 @@ class RegisterView(CreateView):
             return self.form_invalid(user_form, profile_form)
 
     def form_valid(self, user_form, profile_form):
-        result = super(RegisterView, self).form_valid(user_form)
+        result = super().form_valid(user_form)
+        print(self.object)
         profile_form.instance.user = self.object
         profile_form.save()
         return result
@@ -90,7 +89,7 @@ class RegisterView(CreateView):
         if "profile_form" not in kwargs:
             kwargs["profile_form"] = self.get_profile_form()
             kwargs["user_form"] = self.form_class()
-        return super(RegisterView, self).get_context_data(**kwargs)
+        return kwargs
 
     def get_success_url(self):
         return reverse("index")

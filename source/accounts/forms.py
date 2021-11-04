@@ -35,13 +35,14 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "password", "password_confirm", "email", "last_name"]
+        fields = ["username", "password", "password_confirm", "email", "first_name"]
 
 
 class ProfileRegistrationForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ["user", "followers"]
+
 
 class UserChangeForm(forms.ModelForm):
     class Meta:
