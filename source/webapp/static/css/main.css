@@ -1,5 +1,41 @@
+div.login_page{
+    margin-top: 200px;
+}
+
+ul.errorlist{
+    list-style: none;
+    color: darkred;
+}
+
 .round {
     border-radius: 100px;
     border: 3px solid green;
     box-shadow: 0 0 7px #666;
    }
+
+i.bi-person-circle{
+    font-size: 2rem;
+}
+a.btn-primary{
+    height: 40px;
+    margin-bottom: 5px;
+}
+li.dropdown{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+div.wrapper{
+    display: flex;
+    margin-top: 50px;
+}
+
+div.avatar{
+    padding-left: 120px;
+}
+
+div.avatar, div.profile_menu{
+    height: 100%;
+    width: 49%;
+}

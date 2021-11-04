@@ -5,33 +5,37 @@
 
 {% block content %}
     <div class="container">
-        {% if user_obj.profile.avatar %}
-            <img src="{{ user_obj.profile.avatar.url }}" width="100" height="100" alt="" class="round">
-        {% else %}
-            <img class="round" src="https://kudago.com/static/img/default-avatar.png"
-                 width="100" height="100" alt="">
-        {% endif %}
-        {{ user_obj.profile.about }}
-        {{ user_obj.username }}
-        {% ifequal user user_obj %}
-        <p>
-            <a class="btn btn-primary mt-2" href="{% url "profile_edit" user_obj.pk %}">
-                Edit account <i class="bi bi-pencil-square"></i>
-            </a>
-        </p>
-        {% endifequal %}
-        <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
-            {% csrf_token %}
-            <button type="submit" name="user_id" value="{{ user_obj.id }}">
-                {% if user in user_obj.profile.followers.all %}
-                    unfollow
+        <div class="wrapper">
+            <div class="avatar">
+                {% if user_obj.profile.avatar %}
+                    <img src="{{ user_obj.profile.avatar.url }}" width="200"alt="" class="round">
                 {% else %}
-                    follow
+                    <img class="round" src="https://kudago.com/static/img/default-avatar.png"
+                         width="200"alt="">
                 {% endif %}
-            </button>
-
-        </form>
-        Подписчики  {{ user_obj.profile.followers.count }}
+            </div>
+            <div class="profile_menu">
+                <h2>{{ user_obj.username }}
+                    {% ifequal user user_obj %}
+                        <a class="btn btn-primary mt-2" href="{% url "profile_edit" user_obj.pk %}">
+                            Edit account <i class="bi bi-pencil-square"></i>
+                        </a>
+                    {% endifequal %}
+                    <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit" name="user_id" value="{{ user_obj.id }}">
+                            {% if user in user_obj.profile.followers.all %}
+                                unfollow
+                            {% else %}
+                                follow
+                            {% endif %}
+                        </button>
+                    </form>
+                </h2>
+            <p class="mt-3">{{ user_obj.profile.about }}</p>
+                Подписчики  {{ user_obj.profile.followers.count }}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
