@@ -48,7 +48,7 @@ class IndexView(ListView, ModelFormMixin):
             post.comments.create(author=request.user, text=self.form.clean().get("text"))
             return redirect("detail_post", pk=post.pk)
         else:
-            return render(request, self.template_name, {"error": self.form.errors, "post_list": Post.objects.all(),
+            return render(request, "detail_post.html", {"error": self.form.errors, "post": post,
                                                         "form": self.form_class})
 
 
@@ -61,10 +61,15 @@ class PostCreateView(CreateView):
         return reverse("index")
 
 
-class PostDetailView(DetailView):
+class PostDetailView(DetailView, ModelFormMixin):
     model = Post
     template_name = "detail_post.html"
+    form_class = CommentForm
 
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        self.form = self.get_form(self.form_class)
+        return DetailView.get(self, request, *args, **kwargs)
 
 class PostUpdateView(UpdateView):
     model = Post

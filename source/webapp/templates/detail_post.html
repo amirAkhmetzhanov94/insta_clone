@@ -37,6 +37,21 @@
                     </div>
                     </form>
                 </div>
+            <form action="{% url "index" %}" method="post">
+                        <div class="form-row">
+                            {% csrf_token %}
+                                <div class="col-12">
+                                {% if error %}
+                                     <p>{{ error.text }}</p>
+                                {% endif %}
+                                    {{ form|crispy }}
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-primary btn-block">Send</button>
+                                    <input type="hidden" name="post_id" value="{{ post.pk }}">
+                                </div>
+                        </div>
+                    </form>
             </div>
     </div>
 
