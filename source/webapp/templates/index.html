@@ -10,7 +10,7 @@
 {% block content %}
     <div class="container">
         {% for post in post_list %}
-            <div class="card text-center mt-4">
+            <div class="card text-center mt-4 mb-3">
                 <div class="card-header">
                     <a href="{% url "profile" post.author_id %}">{{ post.author }}</a>
                 </div>
@@ -18,7 +18,7 @@
                     <img src="{{ post.picture.url }}" width="500" height="500" alt="">
                 </div>
                 <div class="card-footer text-muted">
-                    2 days ago
+                    {{ post.created_on.date }}
                     <form action="{% url "like_gateway" post.pk %}" method="post">
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}">
@@ -36,6 +36,8 @@
                             <p class="text-left">{{ comment.created_on }} by
                                 <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment.text }}
                             </p>
+                        {% empty %}
+                            <p class="text-left">No comments yet</p>
                         {% endfor %}
                         {% if post.comments.all|length > 3 %}
                             <a class="text-left" href="{% url "detail_post" post.pk %}">View all comments...</a>

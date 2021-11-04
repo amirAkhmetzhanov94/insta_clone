@@ -13,6 +13,17 @@ ul.errorlist{
     box-shadow: 0 0 7px #666;
    }
 
+.square {
+    height: 350px;
+	width: 350px;
+}
+
+.profile_counters{
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+}
+
 i.bi-person-circle{
     font-size: 2rem;
 }

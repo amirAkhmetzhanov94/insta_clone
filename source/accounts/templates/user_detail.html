@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ user_obj.username }}'s profile{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -20,10 +20,10 @@
                         <a class="btn btn-primary mt-2" href="{% url "profile_edit" user_obj.pk %}">
                             Edit account <i class="bi bi-pencil-square"></i>
                         </a>
-                    {% endifequal %}
-                    <form action="{% url "follower-gateway" user_obj.pk %}" method="post">
+                    {% else %}
+                    <form action="{% url "follower-gateway" user_obj.id %}" method="post">
                         {% csrf_token %}
-                        <button class="btn btn-primary" type="submit" name="user_id" value="{{ user_obj.id }}">
+                        <button class="btn btn-primary mt-2" type="submit" name="user_id" value="{{ user_obj.id }}">
                             {% if user in user_obj.profile.followers.all %}
                                 unfollow
                             {% else %}
@@ -31,11 +31,22 @@
                             {% endif %}
                         </button>
                     </form>
+                    {% endifequal %}
                 </h2>
+                <div class="profile_counters">
+                    <h5><b>{{ user_obj.posts.all.count }}</b> posts</h5>
+                    <h5><b>{% if user_obj.followers.count %}{{ user_obj.profile.followers.count }}{% else %}0</b> followers</h5>{% endif %}
+                </div>
             <p class="mt-3">{{ user_obj.profile.about }}</p>
-                Подписчики  {{ user_obj.profile.followers.count }}
             </div>
         </div>
     </div>
-
+    <hr class="mt-5">
+    <div class="row row-cols-3 row-cols-md-3 mt-3">
+        {% for post in user_obj.posts.all %}
+          <div class="col mb-4 text-center">
+              <a href="{% url "detail_post" post.pk %}"><img src="{{ post.picture.url }}" class="square card-img-top" alt="..."></a>
+          </div>
+        {% endfor %}
+    </div>
 {% endblock %}

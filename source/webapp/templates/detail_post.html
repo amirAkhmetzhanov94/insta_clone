@@ -7,52 +7,52 @@
 
 {% block content %}
      <div class="container">
-            <div class="card text-center">
-                <div class="card-header">
-                    {{ post.author }}
-                </div>
-                <div class="card-body">
-                    <img src="{{ post.picture.url }}" width="500" height="500" alt="">
-                </div>
-                <div class="card-footer text-muted">
-                    2 days ago
-                    <form action="{% url "like_gateway" post.pk %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" name="post_id" value="{{ post.id }}">
-                            {% if user in post.likes.all %}
-                                <i class="bi bi-suit-heart-fill"></i>
-                            {% else %}
-                                <i class="bi bi-suit-heart"></i>
-                            {% endif %}
-                        </button>
-                        {{ post.likes.count }}
-                    </form>
-                                    <div class="comments_section mt-3">
-                    <h4 class="text-left"><b>Comments:</b></h4>
-                        {% for comment in post.comments.all %}
-                            <p class="text-left">{{ comment.created_on }} by
-                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment }}
-                            </p>
-                        {% endfor %}
+            <div class="card text-center mt-4 mb-3">
+                    <div class="card-header">
+                        {{ post.author }}
                     </div>
-                    </form>
-                </div>
-            <form action="{% url "index" %}" method="post">
-                        <div class="form-row">
+                    <div class="card-body">
+                        <img src="{{ post.picture.url }}" width="500" height="500" alt="">
+                    </div>
+                    <div class="card-footer text-muted">
+                        2 days ago
+                        <form action="{% url "like_gateway" post.pk %}" method="post">
                             {% csrf_token %}
-                                <div class="col-12">
-                                {% if error %}
-                                     <p>{{ error.text }}</p>
+                            <button type="submit" name="post_id" value="{{ post.id }}">
+                                {% if user in post.likes.all %}
+                                    <i class="bi bi-suit-heart-fill"></i>
+                                {% else %}
+                                    <i class="bi bi-suit-heart"></i>
                                 {% endif %}
-                                    {{ form|crispy }}
+                            </button>
+                            {{ post.likes.count }}
+                        </form>
+                        <div class="comments_section mt-3">
+                            <h4 class="text-left"><b>Comments:</b></h4>
+                                {% for comment in post.comments.all|slice:"3" %}
+                                    <p class="text-left">{{ comment.created_on }} by
+                                        <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment.text }}
+                                    </p>
+                                {% empty %}
+                                    <p class="text-left">No comments yet</p>
+                                {% endfor %}
+                            <form  action="{% url "index" %}" method="post">
+                                <div class="form-row">
+                                    {% csrf_token %}
+                                        <div class="col-12">
+                                        {% if error %}
+                                             <p>{{ error.text }}</p>
+                                        {% endif %}
+                                            {{ form|crispy }}
+                                        </div>
+                                    <div class="col">
+                                        <button class="btn btn-primary btn-block">Send</button>
+                                        <input type="hidden" name="post_id" value="{{ post.pk }}">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <button class="btn btn-primary btn-block">Send</button>
-                                    <input type="hidden" name="post_id" value="{{ post.pk }}">
-                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
             </div>
-    </div>
-
+     </div>
 {% endblock %}
