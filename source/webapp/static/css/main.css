@@ -18,6 +18,14 @@ ul.errorlist{
 	width: 350px;
 }
 
+button{
+    border: none;
+    background-color: transparent;
+}
+i.bi-suit-heart-fill{
+    color: red;
+}
+
 .profile_counters{
     display: flex;
     justify-content: space-between;

@@ -11,15 +11,17 @@
     <div class="container">
         {% for post in post_list %}
             <div class="card text-center mt-4 mb-3">
-                <div class="card-header">
-                    <a href="{% url "profile" post.author_id %}">{{ post.author }}</a>
+                <div class="card-header text-left">
+                    <img src="{{ post.author.profile.avatar.url }}" width="42" alt=""><a class="ml-2" href="{% url "profile" post.author_id %}" style="color: inherit"><b>{{ post.author }}</b></a>
                 </div>
                 <div class="card-body">
                     <img src="{{ post.picture.url }}" width="500" height="500" alt="">
                 </div>
                 <div class="card-footer text-muted">
-                    {{ post.created_on.date }}
-                    <form action="{% url "like_gateway" post.pk %}" method="post">
+                    <div class="creation_date text-center mt-1">
+                        <p style="font-size: small"><i>{{ post.created_on.date }}</i></p>
+                    </div>
+                    <form class="text-left" action="{% url "like_gateway" post.pk %}" method="post">
                         {% csrf_token %}
                         <button type="submit" name="post_id" value="{{ post.id }}">
                             {% if user in post.likes.all %}

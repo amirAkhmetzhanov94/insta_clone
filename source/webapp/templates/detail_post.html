@@ -8,15 +8,19 @@
 {% block content %}
      <div class="container">
             <div class="card text-center mt-4 mb-3">
-                    <div class="card-header">
-                        {{ post.author }}
+                    <div class="card-header text-left">
+                        <img src="{{ post.author.profile.avatar.url }}" width="42" alt="">
+                        <a class="ml-2" href="{% url "profile" post.author_id %}" style="color: inherit">
+                        <b>{{ post.author }}</b></a>
                     </div>
                     <div class="card-body">
                         <img src="{{ post.picture.url }}" width="500" height="500" alt="">
                     </div>
                     <div class="card-footer text-muted">
-                        2 days ago
-                        <form action="{% url "like_gateway" post.pk %}" method="post">
+                        <div class="creation_date text-center mt-1">
+                            <p style="font-size: small"><i>{{ post.created_on.date }}</i></p>
+                        </div>
+                        <form class="text-left" action="{% url "like_gateway" post.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" name="post_id" value="{{ post.id }}">
                                 {% if user in post.likes.all %}
@@ -29,7 +33,7 @@
                         </form>
                         <div class="comments_section mt-3">
                             <h4 class="text-left"><b>Comments:</b></h4>
-                                {% for comment in post.comments.all|slice:"3" %}
+                                {% for comment in post.comments.all %}
                                     <p class="text-left">{{ comment.created_on }} by
                                         <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment.text }}
                                     </p>

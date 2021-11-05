@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from accounts.models import Profile
-
+from django.forms import widgets
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(
@@ -17,6 +17,8 @@ class UserRegistrationForm(forms.ModelForm):
         strip=False,
         widget=forms.PasswordInput
     )
+
+    email = forms.EmailField(label="Email address", required=True, widget=widgets.EmailInput)
 
     def clean(self):
         cleaned_data = super().clean()
