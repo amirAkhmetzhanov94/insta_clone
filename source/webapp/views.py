@@ -3,6 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import ModelFormMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from webapp.models import Post, Comment
 from webapp.forms import PostForm, CommentForm
@@ -29,11 +30,21 @@ class LikeGateway(View):
         return redirect(request.META.get('HTTP_REFERER'))
 
 
-class IndexView(ListView, ModelFormMixin):
+class IndexView(LoginRequiredMixin,ListView, ModelFormMixin):
     model = Post
     template_name = "index.html"
     ordering = "-created_on"
     form_class = CommentForm
+    object = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts_list = []
+        for post in Post.objects.all().order_by("-created_on"):
+            if post.author in self.request.user.profile.following.all():
+                posts_list.append(post)
+        context['posts_list'] = posts_list
+        return context
 
     def get(self, request, *args, **kwargs):
         self.object = None

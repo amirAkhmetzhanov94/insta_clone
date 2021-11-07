@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from accounts.models import Profile
 from django.forms import widgets
 
+
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(
         label="Password",
@@ -43,7 +44,7 @@ class UserRegistrationForm(forms.ModelForm):
 class ProfileRegistrationForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ["user", "followers"]
+        exclude = ["user", "followers", "following"]
 
 
 class UserChangeForm(forms.ModelForm):
@@ -61,5 +62,3 @@ class ProfileChangeForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     q = forms.CharField(max_length=100, required=False, label="Search")
-
-

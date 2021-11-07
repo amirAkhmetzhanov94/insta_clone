@@ -22,6 +22,8 @@ class Profile(models.Model):
 
     followers = models.ManyToManyField(get_user_model(), blank=True, related_name="followers")
 
+    following = models.ManyToManyField(get_user_model(), blank=True, related_name="followings")
+
     def __str__(self):
         return f'{self.user}'
 

@@ -18,6 +18,10 @@ ul.errorlist{
 	width: 350px;
 }
 
+div.no_posts{
+    margin-top:200px;
+}
+
 button{
     border: none;
     background-color: transparent;

@@ -9,14 +9,15 @@
      <div class="container">
             <div class="card text-center mt-4 mb-3">
                     <div class="card-header text-left">
-                        <img src="{{ post.author.profile.avatar.url }}" width="42" alt="">
-                        <a class="ml-2" href="{% url "profile" post.author_id %}" style="color: inherit">
-                        <b>{{ post.author }}</b></a>
+                        <img src="{{ post.author.profile.avatar.url }}" class="round" width="42" height="42" alt=""><b><a class="ml-2" href="{% url "profile" post.author_id %}" style="color: inherit">{{ post.author }}</a></b>
                     </div>
                     <div class="card-body">
                         <img src="{{ post.picture.url }}" width="500" height="500" alt="">
                     </div>
                     <div class="card-footer text-muted">
+                        <div class="description text-center">
+                            {{ post.description }}
+                        </div>
                         <div class="creation_date text-center mt-1">
                             <p style="font-size: small"><i>{{ post.created_on.date }}</i></p>
                         </div>

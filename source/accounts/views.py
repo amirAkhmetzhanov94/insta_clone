@@ -38,14 +38,17 @@ class FollowGateway(View):
     user_obj = None
 
     def dispatch(self, request, *args, **kwargs):
-        self.user_obj = get_object_or_404(Profile, pk=kwargs.get('pk'))
+        self.user_obj = get_object_or_404(Profile, user_id=kwargs.get('pk'))
+        self.user_followings = get_object_or_404(Profile, user_id=self.request.user.pk)
         return super(FollowGateway, self).dispatch(request, *args, **kwargs)
 
     def set_follow(self):
         self.user_obj.followers.add(self.request.user)
+        self.user_followings.following.add(self.user_obj.user)
 
     def remove_follow(self):
         self.user_obj.followers.remove(self.request.user)
+        self.user_followings.following.remove(self.user_obj.user)
 
     def post(self, request, *args, **kwargs):
         if request.user in self.user_obj.followers.all():
@@ -78,7 +81,6 @@ class RegisterView(CreateView):
 
     def form_valid(self, user_form, profile_form):
         result = super().form_valid(user_form)
-        print(self.object)
         profile_form.instance.user = self.object
         profile_form.save()
         return result
@@ -101,6 +103,11 @@ class UserDetailView(DetailView):
     model = User
     template_name = "user_detail.html"
     context_object_name = "user_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["posts_list"] = self.object.posts.all().order_by("-created_on")
+        return context
 
 
 class UserChangeView(UserPassesTestMixin, UpdateView):

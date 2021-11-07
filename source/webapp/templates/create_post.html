@@ -6,10 +6,13 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url "create_post" %}" method="post"
-    enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button class="btn btn-primary">Create</button>
+    <div class="create_post mt-4">
+        <h1>Create a new post</h1>
+        <form action="{% url "create_post" %}" method="post"
+        enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-primary">Create</button>
         </form>
+    </div>
 {% endblock %}
