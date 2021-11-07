@@ -5,7 +5,7 @@
 {% block title %}Edit profile{% endblock %}
 
 {% block content %}
-    <h1 class="mb-5">Edit {{ user_obj.username }}'s profile</h1>
+    <h1 class="mb-5 mt-5">Edit {{ user_obj.username }}'s profile</h1>
     <form action="{% url "profile_edit" user_obj.pk %}"
           method="post"
           enctype="multipart/form-data">
