@@ -34,9 +34,19 @@
                     {% endifequal %}
                 </h2>
                 <div class="profile_counters">
-                    <h5><b>{{ user_obj.posts.all.count }}</b> posts</h5>
-                    <h5><b>{% if user_obj.profile.followers.count %}{{ user_obj.profile.followers.count }}
+                    <div class="mr-2">
+                        <h5><b>{{ user_obj.posts.all.count }}</b> posts</h5>
+                    </div>
+                    <div class="mr-2">
+                        <h5><b>{% if user_obj.profile.followers.count %}{{ user_obj.profile.followers.count }}
                     {% else %}0 {% endif %}</b>followers</h5>
+                    </div>
+                    <div>
+                        <h5><b>{% if user_obj.subscriptions.count %}{{ user_obj.subscriptions.count }}
+                        {% else %}0 {% endif %}</b>subscriptions</h5>
+                    </div>
+
+
                 </div>
             <p class="mt-3">{{ user_obj.profile.about }}</p>
             </div>

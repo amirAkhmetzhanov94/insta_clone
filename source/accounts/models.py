@@ -20,7 +20,7 @@ class Profile(models.Model):
 
     gender_user = models.ForeignKey(Gender, blank=True, null=True, on_delete=models.PROTECT, verbose_name="Gender user")
 
-    followers = models.ManyToManyField(get_user_model(), blank=True, related_name="followers")
+    followers = models.ManyToManyField(get_user_model(), blank=True, related_name="subscriptions")
 
     following = models.ManyToManyField(get_user_model(), blank=True, related_name="followings")
 

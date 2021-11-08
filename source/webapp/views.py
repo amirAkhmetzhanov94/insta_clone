@@ -9,7 +9,7 @@ from webapp.models import Post, Comment
 from webapp.forms import PostForm, CommentForm
 
 
-class LikeGateway(View):
+class LikeGateway(LoginRequiredMixin, View):
     post_obj = None
 
     def dispatch(self, request, *args, **kwargs):
@@ -30,21 +30,12 @@ class LikeGateway(View):
         return redirect(request.META.get('HTTP_REFERER'))
 
 
-class IndexView(LoginRequiredMixin,ListView, ModelFormMixin):
+class IndexView(LoginRequiredMixin, ListView, ModelFormMixin):
     model = Post
     template_name = "index.html"
     ordering = "-created_on"
     form_class = CommentForm
     object = None
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        posts_list = []
-        for post in Post.objects.all().order_by("-created_on"):
-            if post.author in self.request.user.profile.following.all():
-                posts_list.append(post)
-        context['posts_list'] = posts_list
-        return context
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -63,16 +54,19 @@ class IndexView(LoginRequiredMixin,ListView, ModelFormMixin):
                                                         "form": self.form_class})
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "create_post.html"
     form_class = PostForm
 
-    def get_success_url(self):
-        return reverse("index")
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return redirect("index")
 
 
-class PostDetailView(DetailView, ModelFormMixin):
+class PostDetailView(LoginRequiredMixin, DetailView, ModelFormMixin):
     model = Post
     template_name = "detail_post.html"
     form_class = CommentForm
@@ -82,7 +76,8 @@ class PostDetailView(DetailView, ModelFormMixin):
         self.form = self.get_form(self.form_class)
         return DetailView.get(self, request, *args, **kwargs)
 
-class PostUpdateView(UpdateView):
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = "update.html"
     form_class = PostForm
@@ -91,13 +86,13 @@ class PostUpdateView(UpdateView):
         return reverse("post_detail", kwargs={"pk": self.get_object().pk})
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = "delete_post.html"
     success_url = reverse_lazy("user_detail")
 
 
-class PostCommentCreateView(CreateView):
+class PostCommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ["text"]
 

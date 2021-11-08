@@ -34,7 +34,7 @@ class LogoutView(View):
         return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
-class FollowGateway(View):
+class FollowGateway(LoginRequiredMixin, View):
     user_obj = None
 
     def dispatch(self, request, *args, **kwargs):
@@ -83,6 +83,7 @@ class RegisterView(CreateView):
         result = super().form_valid(user_form)
         profile_form.instance.user = self.object
         profile_form.save()
+        login(self.request, self.object)
         return result
 
     def form_invalid(self, user_form, profile_form):
@@ -99,7 +100,7 @@ class RegisterView(CreateView):
         return reverse("index")
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = "user_detail.html"
     context_object_name = "user_obj"
@@ -158,7 +159,7 @@ class UserChangeView(UserPassesTestMixin, UpdateView):
         return reverse("profile", kwargs={"pk": self.object.pk})
 
 
-class SearchResultsView(ListView):
+class SearchResultsView(LoginRequiredMixin, ListView):
     model = User
     context_object_name = "users"
     template_name = "search_result.html"
