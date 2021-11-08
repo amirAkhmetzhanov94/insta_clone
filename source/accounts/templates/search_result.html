@@ -23,7 +23,7 @@
                 <tbody>
                 <tr>
                     {% for user in object_list %}
-                    <td><img src="{{ user.profile.avatar.url }}" width="42" alt=""></td>
+                    <td><img src="{{ user.profile.avatar.url }}" class="round" width="42" height="42" alt=""></td>
                     <td><a href="{% url "profile" user.pk %}">{{ user.username }}</a></td>
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>

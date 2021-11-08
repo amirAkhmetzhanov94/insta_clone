@@ -37,6 +37,15 @@ class IndexView(LoginRequiredMixin, ListView, ModelFormMixin):
     form_class = CommentForm
     object = None
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        posts_list = []
+        for post in Post.objects.all().order_by("-created_on"):
+            if post.author in self.request.user.profile.following.all():
+                posts_list.append(post)
+        context['posts_list'] = posts_list
+        return context
+
     def get(self, request, *args, **kwargs):
         self.object = None
         self.form = self.get_form(self.form_class)

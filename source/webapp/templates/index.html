@@ -7,65 +7,65 @@
 
 
 {% block content %}
-    {% for post in post_list %}
-        {% if post.author in user.profile.following.all %}
-            <div class="card text-center mt-4 mb-3">
-                <div class="card-header text-left">
-                    <a class="ml-2"
-                       href="{% url "profile" post.author_id %}"
-                       style="color: inherit"><img src="{{ post.author.profile.avatar.url }}" width="42"
-                                                   alt=""> <b>{{ post.author }}</b></a>
+    {% for post in posts_list %}
+        <div class="card text-center mt-4 mb-3">
+            <div class="card-header text-left">
+                <img src="{{ post.author.profile.avatar.url }}" class="round" width="42" height="42" alt=""><b><a class="ml-2" href="{% url "profile" post.author_id %}" style="color: inherit">{{ post.author }}</a></b>
+            </div>
+            <div class="card-body">
+                <a href="{% url "detail_post" post.pk %}"><img src="{{ post.picture.url }}" width="500" height="500" alt=""></a>
+            </div>
+            <div class="card-footer text-muted">
+                <div class="description text-center">
+                    {{ post.description }}
                 </div>
-                <div class="card-body">
-                    <img src="{{ post.picture.url }}" width="500" height="500" alt="">
+                <div class="creation_date text-center mt-1">
+                    <p style="font-size: small"><i>{{ post.created_on.date }}</i></p>
                 </div>
-                <div class="card-footer text-muted">
-                    <div class="creation_date text-center mt-1">
-                        <p style="font-size: small"><i>{{ post.created_on.date }}</i></p>
-                    </div>
-                    <form class="text-left" action="{% url "like_gateway" post.pk %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" name="post_id" value="{{ post.id }}">
-                            {% if user in post.likes.all %}
-                                <i class="bi bi-suit-heart-fill"></i>
-                            {% else %}
-                                <i class="bi bi-suit-heart"></i>
-                            {% endif %}
-                        </button>
-                        {{ post.likes.count }}
-                    </form>
-                    <div class="comments_section mt-3">
-                        <h4 class="text-left"><b>Comments:</b></h4>
-                        {% for comment in post.comments.all|slice:"3" %}
-                            <p class="text-left">{{ comment.created_on }} by
-                                <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>: {{ comment.text }}
-                            </p>
-                        {% empty %}
-                            <p class="text-left">No comments yet</p>
-                        {% endfor %}
-                        {% if post.comments.all|length > 3 %}
-                            <a class="text-left" href="{% url "detail_post" post.pk %}">View all comments...</a>
+                <form class="text-left" action="{% url "like_gateway" post.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="post_id" value="{{ post.id }}">
+                        {% if user in post.likes.all %}
+                            <i class="bi bi-suit-heart-fill"></i>
+                        {% else %}
+                            <i class="bi bi-suit-heart"></i>
                         {% endif %}
-                    </div>
-                    <form action="{% url "index" %}" method="post">
-                        <div class="form-row">
-                            {% csrf_token %}
+                    </button>
+                    {{ post.likes.count }}
+                </form>
+                <div class="comments_section mt-3">
+                <h4 class="text-left"><b>Comments:</b></h4>
+                    {% for comment in post.comments.all|slice:"3" %}
+                        <p class="text-left">{{ comment.created_on }} by
+                            <a href="{% url "profile" comment.author.pk %}">{{ comment.author }}</a>:  {{ comment.text }}
+                        </p>
+                    {% empty %}
+                        <p class="text-left">No comments yet</p>
+                    {% endfor %}
+                    {% if post.comments.all|length > 3 %}
+                        <a class="text-left" href="{% url "detail_post" post.pk %}">View all comments...</a>
+                    {% endif %}
+                </div>
+                <form  action="{% url "index" %}" method="post">
+                    <div class="form-row">
+                        {% csrf_token %}
                             <div class="col-12">
-                                {% if error %}
-                                    <p>{{ error.text }}</p>
-                                {% endif %}
+                            {% if error %}
+                                 <p>{{ error.text }}</p>
+                            {% endif %}
                                 {{ form|crispy }}
                             </div>
                             <div class="col">
                                 <button class="btn btn-primary btn-block">Send</button>
                                 <input type="hidden" name="post_id" value="{{ post.pk }}">
                             </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        {% endif %}
+        </div>
+    {% empty %}
+        <div class="no_posts text-center">
+            <h2>You are not following anyone</h2>
+        </div>
     {% endfor %}
-
-
 {% endblock %}

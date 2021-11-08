@@ -175,7 +175,7 @@ class SearchResultsView(LoginRequiredMixin, ListView):
         if self.search_value:
             context["query"] = urlencode({"q": self.search_value})
             if len(context["users"]) == 0:
-                context["message"] = "Ничего не найдено"
+                context["message"] = "Nothing found"
         return context
 
     def get_queryset(self):
